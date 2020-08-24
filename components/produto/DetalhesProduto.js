@@ -1,0 +1,308 @@
+import React, {Component} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  BackHandler,
+  FlatList,
+  Dimensions,
+} from 'react-native';
+import Header from '../header/Header';
+import {connect} from 'react-redux';
+import {
+  buscaDetalhesProduto,
+  mostrarIconeFiltroProdutos,
+} from '../../actions/ProdutosAction';
+import {formatarCurrency} from '../utils/Utils';
+import {Actions} from 'react-native-router-flux';
+import Carousel from 'react-native-snap-carousel';
+import FastImage from 'react-native-fast-image';
+
+const screenWidth = Math.round(Dimensions.get('window').width);
+
+class DetalhesProduto extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount = async () => {
+    this.props.mostrarIconeFiltroProdutos(false);
+    await this.props.buscaDetalhesProduto(
+      this.props.token,
+      this.props.cdProduto,
+    );
+    this.backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      this.backAction,
+    );
+  };
+
+  backAction = async () => {
+    Actions.listaProdutos();
+    return true;
+  };
+
+  _renderItem(titulo, item) {
+    if (item != null) {
+      return (
+        <>
+          <Text style={styles.txtDesc}>{titulo}</Text>
+          <Text style={styles.txtItem}>{item} </Text>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Text style={styles.txtDesc}>{titulo}</Text>
+          <Text style={styles.txtItem}>Não informado</Text>
+        </>
+      );
+    }
+  }
+
+  _renderErroServer(item) {
+    if (item !== '') {
+      return <Text style={styles.txtValidacaoServer}>{item}</Text>;
+    }
+  }
+
+  _renderImgCarousel = ({item, index}) => {
+    let imgUrl = {uri: item.ImageUrl};
+    return (
+      <View>
+        <FastImage
+          source={imgUrl}
+          style={styles.imgProduto}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      </View>
+    );
+  };
+
+  renderRow(item) {
+    if (item.EstoqueAtual > 0) {
+      return (
+        <View style={styles.viewGrade}>
+          <View style={styles.viewCell}>
+            <Text style={styles.txtGrade}>{item.Tamanho}</Text>
+          </View>
+          <View style={styles.viewCell}>
+            <Text style={styles.txtGrade}>{item.Cor}</Text>
+          </View>
+          <View style={styles.viewCell}>
+            <Text style={styles.txtGrade}>{item.EstoqueAtual}</Text>
+          </View>
+          <View style={styles.viewCell}>
+            <Text style={styles.txtGradeEan}>{item.EAN}</Text>
+          </View>
+        </View>
+      );
+    }
+  }
+
+  renderHeader() {
+    return (
+      <View style={styles.viewGrade}>
+        <View style={styles.viewCell}>
+          <Text style={styles.txtHeader}>Tamanho</Text>
+        </View>
+        <View style={styles.viewCell}>
+          <Text style={styles.txtHeader}>Cor</Text>
+        </View>
+        <View style={styles.viewCell}>
+          <Text style={styles.txtHeader}>Estoque</Text>
+        </View>
+        <View style={styles.viewCell}>
+          <Text style={styles.txtHeader}>EAN</Text>
+        </View>
+      </View>
+    );
+  }
+
+  render() {
+    /* var locais = [];
+    console.log(this.props.detalhesProduto);
+    this.props.detalhesProduto.EstoqueProduto.forEach((obj, i) => {
+      locais.push(obj.CdLocal);
+    });
+    var uniq = [...new Set(locais)]; */
+    return (
+      <ScrollView style={styles.viewPrincipal}>
+        <Header titulo="Produtos" />
+        {this._renderErroServer(this.props.validacaoDetalhesProduto)}
+        <View style={styles.viewTituloPrincipal}>
+          <Text style={styles.tituloPrincipal}>
+            {this.props.detalhesProduto.Descricao}
+          </Text>
+        </View>
+        <View style={styles.viewDetalhes}>
+          {this._renderItem('Código', this.props.codigoCliente)}
+          <Text style={styles.txtDesc}>Preço Venda</Text>
+          <Text style={styles.txtItem}>
+            {formatarCurrency(this.props.detalhesProduto.PrecoVenda)}
+          </Text>
+          {this._renderItem('Marca', this.props.detalhesProduto.Marca)}
+          {this._renderItem('Grupo', this.props.detalhesProduto.Grupo)}
+          {this._renderItem('Subgrupo', this.props.detalhesProduto.SubGrupo)}
+        </View>
+        <View style={styles.viewTituloPrincipal}>
+          <Text style={styles.tituloPrincipal}>Grade de Estoque</Text>
+        </View>
+        <View style={styles.viewDetalhes}>
+          {/* <Picker
+            mode="dropdown"
+            selectedValue={this.props.idLocalSelecionado}
+            onValueChange={(itemValue, itemIndex) => {
+              this.props.alteraLocalProdutoSelecionado(itemValue);
+            }}
+            style={styles.txtInput}>
+            {this.props.detalhesProduto.EstoqueProduto.map((obj, i) => (
+              this.uniq.map((item, x) => (
+                if (obj.CdLocal === item) {
+                  <Picker.Item label={obj.Local} value={obj.CdLocal} key={i} />
+                }
+              ))
+            ))}
+          </Picker> */}
+          <FlatList
+            ListHeaderComponent={this.renderHeader()}
+            data={this.props.detalhesProduto.EstoqueProduto}
+            renderItem={({item}) => this.renderRow(item)}
+            keyExtractor={item => item.EAN}
+          />
+        </View>
+        <View style={styles.viewTituloPrincipal}>
+          <Text style={styles.tituloPrincipal}>Galeria</Text>
+        </View>
+        <View style={styles.viewCarousel}>
+          <Carousel
+            layout={'stack'}
+            ref={c => {
+              this._carousel = c;
+            }}
+            data={this.props.detalhesProduto.ProdutoImagens}
+            renderItem={this._renderImgCarousel}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth}
+            style={styles.carousel}
+          />
+        </View>
+      </ScrollView>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  token: state.LoginReducer.token,
+  detalhesProduto: state.ProdutosReducer.detalhesDoProduto,
+  cdProduto: state.ProdutosReducer.cdProduto,
+  validacaoDetalhesProduto: state.ProdutosReducer.validacaoDetalhesProduto,
+  codigoCliente: state.ProdutosReducer.codigoCliente,
+});
+
+export default connect(
+  mapStateToProps,
+  {buscaDetalhesProduto, mostrarIconeFiltroProdutos},
+)(DetalhesProduto);
+
+const styles = StyleSheet.create({
+  viewPrincipal: {
+    backgroundColor: '#edeff2',
+    flex: 1,
+  },
+  viewTituloPrincipal: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    padding: 10,
+    margin: 10,
+    marginBottom: 0,
+    elevation: 4,
+  },
+  tituloPrincipal: {
+    color: '#474a4f',
+    fontSize: 21,
+    alignSelf: 'center',
+  },
+  viewDetalhes: {
+    backgroundColor: '#FFF',
+    padding: 20,
+    margin: 10,
+    flex: 15,
+    elevation: 3,
+  },
+  txtDescAssunto: {
+    color: '#474a4f',
+    fontSize: 17,
+    marginBottom: 12,
+    fontWeight: 'bold',
+  },
+  txtDesc: {
+    color: '#474a4f',
+    fontSize: 17,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  txtItem: {
+    fontSize: 15,
+    marginBottom: 12,
+  },
+  txtValidacaoServer: {
+    backgroundColor: '#FF4444',
+    color: '#FFFFFF',
+    padding: 15,
+    fontWeight: 'bold',
+    borderRadius: 10,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  viewCarousel: {
+    flex: 1,
+    padding: 10,
+    margin: 10,
+    //backgroundColor: '#FFF',
+    alignSelf: 'center',
+    elevation: 4,
+  },
+  imgProduto: {
+    resizeMode: 'contain',
+    width: screenWidth,
+    height: screenWidth,
+    alignSelf: 'center',
+  },
+  viewGrade: {
+    flexDirection: 'row',
+  },
+  viewCell: {
+    padding: 10,
+    margin: 1,
+    borderWidth: 1,
+    flex: 6,
+    alignItems: 'center',
+  },
+  txtGrade: {
+    color: '#474a4f',
+    fontSize: 15,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  /*txtGradeEstoqueZero: {
+    color: '#d14',
+    fontSize: 15,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },*/
+  txtGradeEan: {
+    color: '#474a4f',
+    fontSize: 12,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  txtHeader: {
+    color: '#474a4f',
+    fontSize: 15,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+});
