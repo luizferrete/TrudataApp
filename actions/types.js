@@ -93,3 +93,17 @@ export const SET_MODAL_FILTRO_PRODUTOS_VISIBLE =
 export const ALTERA_FILTRO_PRODUTO_SELECIONADO =
   'altera_filtro_produto_selecionado';
 export const INICIALIZA_LOGIN = 'inicializa_login';
+export const BUSCA_MARCAS = 'busca_marcas';
+export const VALIDA_MARCAS = 'valida_marcas';
+export const ALTERA_MARCA_SELECIONADA = 'altera_marca_selecionada';
+export const BUSCA_TAMANHOS = 'busca_tamanhos';
+export const VALIDA_TAMANHOS = 'valida_tamanhos';
+export const ALTERA_TAMANHO_SELECIONADO = 'altera_tamanho_selecionado';
+export const BUSCA_CORES = 'busca_cores';
+export const VALIDA_CORES = 'valida_cores';
+export const ALTERA_COR_SELECIONADA = 'altera_cor_selecionada';
+export const BUSCA_GRUPOS = 'busca_grupos';
+export const VALIDA_GRUPOS = 'valida_grupos';
+export const ALTERA_GRUPO_SELECIONADO = 'altera_grupo_selecionado';
+export const BUSCA_SUBGRUPOS = 'busca_subgrupos';
+export const ALTERA_SUBGRUPO_SELECIONADO = 'altera_subgrupo_selecionado';

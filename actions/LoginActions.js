@@ -57,6 +57,7 @@ export const autenticarUsuario = user => {
             }
           });
       } catch (error) {
+        console.log(error);
         dispatch({
           type: LOGIN_FAIL,
           payload:

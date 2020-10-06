@@ -11,7 +11,10 @@ import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {setModalFiltroVisible} from '../../actions/ContatosActions';
 import {mostraPesquisarClientes} from '../../actions/ClientesActions';
-import {mostraPesquisarProdutos} from '../../actions/ProdutosAction';
+import {
+  mostraPesquisarProdutos,
+  setModalFiltroProdutosVisible,
+} from '../../actions/ProdutosAction';
 
 class Header extends Component {
   constructor(props) {
@@ -22,8 +25,8 @@ class Header extends Component {
     this.props.setModalFiltroVisible(visible);
   }
 
-  setModalProdutoVisible(visible) {
-    this.props.setModalFiltroProdutoVisible(visible);
+  setModalProdVisible(visible) {
+    this.props.setModalFiltroProdutosVisible(visible);
   }
 
   renderFilterIconClientes(mostrarIcone) {
@@ -52,11 +55,7 @@ class Header extends Component {
       return (
         <View style={styles.viewFiltro}>
           <TouchableHighlight
-            onPress={() => {
-              this.props.mostraPesquisarProd
-                ? this.props.mostraPesquisarProdutos(false)
-                : this.props.mostraPesquisarProdutos(true);
-            }}
+            onPress={() => this.setModalProdVisible(true)}
             underlayColor="transparent">
             <Image
               source={require('../../imgs/btn_search.png')}
@@ -166,6 +165,7 @@ export default connect(
     setModalFiltroVisible,
     mostraPesquisarClientes,
     mostraPesquisarProdutos,
+    setModalFiltroProdutosVisible,
   },
 )(Header);
 

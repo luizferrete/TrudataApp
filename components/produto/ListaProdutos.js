@@ -21,6 +21,11 @@ import {
   mostrarIconeFiltroProdutos,
   alteraFiltroProdutoSelecionado,
   enviaCodigoProdutoCliente,
+  alteraTamanhoSelecionado,
+  alteraMarcaSelecionada,
+  alteraCorSelecionada,
+  alteraGrupoSelecionado,
+  alteraSubgrupoSelecionado,
 } from '../../actions/ProdutosAction';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {formatarCurrency} from '../utils/Utils';
@@ -32,6 +37,7 @@ import RadioForm, {
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
 import FastImage from 'react-native-fast-image';
+import FiltroProduto from './FiltroProduto';
 
 const top = 10;
 
@@ -58,12 +64,21 @@ class ListaProdutos extends Component {
     this.props.alteraSkipProdutos(0);
     this.props.alteraDataLoadProdutos([]);
     this.props.isLoadingProdutos('N');
+    this.props.alteraTamanhoSelecionado(null);
+    this.props.alteraMarcaSelecionada(null);
+    this.props.alteraCorSelecionada(null);
+    this.props.alteraGrupoSelecionado(null);
+    this.props.alteraSubgrupoSelecionado(null);
     this.props.buscaListaProdutos(
       this.props.token,
       '',
       this.props.skip,
       top,
       this.props.valueFiltroProdutoSelecionado,
+      this.props.idMarcaSelecionada,
+      this.props.idTamanhoSelecionado,
+      this.props.idCorSelecionada,
+      this.props.idSubgrupoSelecionado,
     );
   }
 
@@ -75,6 +90,11 @@ class ListaProdutos extends Component {
     this.setState({
       maxReached: false,
     });
+    await this.props.alteraTamanhoSelecionado(null);
+    await this.props.alteraMarcaSelecionada(null);
+    await this.props.alteraCorSelecionada(null);
+    await this.props.alteraGrupoSelecionado(null);
+    await this.props.alteraSubgrupoSelecionado(null);
     await this.props.modificaSearchProduto('');
     await this.props.mostraPesquisarProdutos(false);
     return true;
@@ -101,6 +121,10 @@ class ListaProdutos extends Component {
         this.props.skip,
         top,
         this.props.valueFiltroProdutoSelecionado,
+        this.props.idMarcaSelecionada,
+        this.props.idTamanhoSelecionado,
+        this.props.idCorSelecionada,
+        this.props.idSubgrupoSelecionado,
       );
     }
 
@@ -121,7 +145,7 @@ class ListaProdutos extends Component {
     return;
   };
 
-  searchProdutos = async () => {
+  /*searchProdutos = async () => {
     await this.props.alteraSkipProdutos(0);
     await this.props.alteraDataLoadProdutos([]);
     await this.props.isLoadingProdutos('S');
@@ -149,17 +173,26 @@ class ListaProdutos extends Component {
         ...response,
       ]);
     }
-  };
+  };*/
 
   cancelSearch = async () => {
     await this.props.alteraSkipProdutos(0);
     await this.props.alteraDataLoadProdutos([]);
+    await this.props.alteraTamanhoSelecionado(null);
+    await this.props.alteraMarcaSelecionada(null);
+    await this.props.alteraCorSelecionada(null);
+    await this.props.alteraSubgrupoSelecionado(null);
+    await this.props.alteraGrupoSelecionado(null);
     await this.props.buscaListaProdutos(
       this.props.token,
       '',
       this.props.skip,
       top,
       this.props.valueFiltroProdutoSelecionado,
+      this.props.idMarcaSelecionada,
+      this.props.idTamanhoSelecionado,
+      this.props.idCorSelecionada,
+      this.props.idSubgrupoSelecionado,
     );
   };
 
@@ -174,6 +207,11 @@ class ListaProdutos extends Component {
       maxReached: false,
     });
     await this.props.modificaSearchProduto('');
+    await this.props.alteraTamanhoSelecionado(null);
+    await this.props.alteraMarcaSelecionada(null);
+    await this.props.alteraCorSelecionada(null);
+    await this.props.alteraGrupoSelecionado(null);
+    await this.props.alteraSubgrupoSelecionado(null);
   };
 
   renderRow(produto) {
@@ -349,6 +387,7 @@ class ListaProdutos extends Component {
             ListFooterComponent={this.renderFooter}
           />
         </View>
+        <FiltroProduto />
       </View>
     );
   }
@@ -366,6 +405,10 @@ const mapStateToProps = state => ({
   loading: state.ProdutosReducer.loading,
   valueFiltroProdutoSelecionado:
     state.ProdutosReducer.valueFiltroProdutoSelecionado,
+  idMarcaSelecionada: state.ProdutosReducer.idMarcaSelecionada,
+  idTamanhoSelecionado: state.ProdutosReducer.idTamanhoSelecionado,
+  idCorSelecionada: state.ProdutosReducer.idCorSelecionada,
+  idSubgrupoSelecionado: state.ProdutosReducer.idSubgrupoSelecionado,
 });
 
 export default connect(
@@ -381,6 +424,11 @@ export default connect(
     isLoadingProdutos,
     mostrarIconeFiltroProdutos,
     alteraFiltroProdutoSelecionado,
+    alteraTamanhoSelecionado,
+    alteraMarcaSelecionada,
+    alteraCorSelecionada,
+    alteraGrupoSelecionado,
+    alteraSubgrupoSelecionado,
   },
 )(ListaProdutos);
 
