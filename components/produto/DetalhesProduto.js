@@ -120,6 +120,53 @@ class DetalhesProduto extends Component {
     );
   }
 
+  renderEstoque() {
+    if (
+      this.props.detalhesProduto.EstoqueProduto != null &&
+      this.props.detalhesProduto.EstoqueProduto.length > 0
+    ) {
+      return (
+        <FlatList
+          ListHeaderComponent={this.renderHeader()}
+          data={this.props.detalhesProduto.EstoqueProduto}
+          renderItem={({item}) => this.renderRow(item)}
+          keyExtractor={item => item.EAN}
+        />
+      );
+    } else {
+      return <Text style={styles.txtSemInfo}>Sem estoque!</Text>;
+    }
+  }
+
+  renderImagens() {
+    if (
+      this.props.detalhesProduto.ProdutoImagens != null &&
+      this.props.detalhesProduto.ProdutoImagens.length > 0
+    ) {
+      return (
+        <View style={styles.viewCarousel}>
+          <Carousel
+            layout={'stack'}
+            ref={c => {
+              this._carousel = c;
+            }}
+            data={this.props.detalhesProduto.ProdutoImagens}
+            renderItem={this._renderImgCarousel}
+            sliderWidth={screenWidth}
+            itemWidth={screenWidth}
+            style={styles.carousel}
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.viewDetalhes}>
+          <Text style={styles.txtSemInfo}>Nenhuma imagem cadastrada!</Text>
+        </View>
+      );
+    }
+  }
+
   render() {
     /* var locais = [];
     console.log(this.props.detalhesProduto);
@@ -165,29 +212,12 @@ class DetalhesProduto extends Component {
               ))
             ))}
           </Picker> */}
-          <FlatList
-            ListHeaderComponent={this.renderHeader()}
-            data={this.props.detalhesProduto.EstoqueProduto}
-            renderItem={({item}) => this.renderRow(item)}
-            keyExtractor={item => item.EAN}
-          />
+          {this.renderEstoque()}
         </View>
         <View style={styles.viewTituloPrincipal}>
           <Text style={styles.tituloPrincipal}>Galeria</Text>
         </View>
-        <View style={styles.viewCarousel}>
-          <Carousel
-            layout={'stack'}
-            ref={c => {
-              this._carousel = c;
-            }}
-            data={this.props.detalhesProduto.ProdutoImagens}
-            renderItem={this._renderImgCarousel}
-            sliderWidth={screenWidth}
-            itemWidth={screenWidth}
-            style={styles.carousel}
-          />
-        </View>
+        {this.renderImagens()}
       </ScrollView>
     );
   }
@@ -304,5 +334,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 5,
     fontWeight: 'bold',
+  },
+  txtSemInfo: {
+    alignSelf: 'center',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#474a4f',
   },
 });

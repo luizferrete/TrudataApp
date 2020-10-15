@@ -250,10 +250,18 @@ const validaMarcas = (msg, dispatch) => {
   });
 };
 
-export const alteraMarcaSelecionada = marca => {
+export const alteraMarcaSelecionada = (cdMarca, listaMarcas) => {
+  var label = 'Selecione uma marca...';
+  if (listaMarcas != null) {
+    listaMarcas.map((obj, i) => {
+      if (obj.value === cdMarca) {
+        label = obj.label;
+      }
+    });
+  }
   return {
     type: ALTERA_MARCA_SELECIONADA,
-    payload: marca,
+    payload: {codigo: cdMarca, label: label},
   };
 };
 
@@ -298,10 +306,18 @@ const validaTamanhos = (msg, dispatch) => {
   });
 };
 
-export const alteraTamanhoSelecionado = tamanho => {
+export const alteraTamanhoSelecionado = (cdTamanho, listaTamanhos) => {
+  var label = 'Selecione um tamanho...';
+  if (listaTamanhos != null) {
+    listaTamanhos.map((obj, i) => {
+      if (obj.value === cdTamanho) {
+        label = obj.label;
+      }
+    });
+  }
   return {
     type: ALTERA_TAMANHO_SELECIONADO,
-    payload: tamanho,
+    payload: {codigo: cdTamanho, label: label},
   };
 };
 
@@ -346,10 +362,18 @@ const validaCores = (msg, dispatch) => {
   });
 };
 
-export const alteraCorSelecionada = cor => {
+export const alteraCorSelecionada = (cdCor, listaCores) => {
+  var label = 'Selecione um tamanho...';
+  if (listaCores != null) {
+    listaCores.map((obj, i) => {
+      if (obj.value === cdCor) {
+        label = obj.label;
+      }
+    });
+  }
   return {
     type: ALTERA_COR_SELECIONADA,
-    payload: cor,
+    payload: {codigo: cdCor, label: label},
   };
 };
 
@@ -421,9 +445,19 @@ export const buscaSubgrupos = (idGrupo, arrayGrupos) => {
   };
 };
 
-export const alteraSubgrupoSelecionado = sub => {
+export const alteraSubgrupoSelecionado = (cdSub, listaGrupos) => {
+  var label = 'Selecione um subgrupo...';
+  if (listaGrupos != null) {
+    listaGrupos.map((obj, i) => {
+      obj.SubGrupos.map((item, j) => {
+        if (item.value === cdSub) {
+          label = `${obj.label} - ${item.label}`;
+        }
+      });
+    });
+  }
   return {
     type: ALTERA_SUBGRUPO_SELECIONADO,
-    payload: sub,
+    payload: {codigo: cdSub, label: label},
   };
 };

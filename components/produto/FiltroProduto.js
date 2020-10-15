@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableHighlight, Picker} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {connect} from 'react-redux';
 import {
@@ -10,7 +17,6 @@ import {
   modificaSearchProduto,
   mostraPesquisarProdutos,
   isLoadingProdutos,
-  mostrarIconeFiltroProdutos,
   alteraFiltroProdutoSelecionado,
   enviaCodigoProdutoCliente,
   setModalFiltroProdutosVisible,
@@ -23,7 +29,6 @@ import {
   alteraGrupoSelecionado,
   buscaGrupos,
   alteraSubgrupoSelecionado,
-  buscaSubgrupos,
 } from '../../actions/ProdutosAction';
 import RadioForm, {
   RadioButton,
@@ -31,18 +36,12 @@ import RadioForm, {
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
 import {SearchBar} from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const top = 10;
 
 class FiltroProduto extends Component {
-  componentDidMount() {
-    this.props.buscaMarcas(this.props.token);
-    this.props.buscaTamanhos(this.props.token);
-    this.props.buscaCores(this.props.token);
-    this.props.buscaGrupos(this.props.token);
-  }
-
   searchProdutos = async () => {
     await this.props.setModalFiltroProdutosVisible(false);
     await this.props.alteraSkipProdutos(0);
@@ -77,6 +76,12 @@ class FiltroProduto extends Component {
       ]);
     }
   };
+
+  _renderErroValidacao(item) {
+    if (item !== '') {
+      return <Text style={styles.txtValidacao}>{item}</Text>;
+    }
+  }
 
   render() {
     var filtroNome = {value: 0, label: 'Nome'};
@@ -114,7 +119,7 @@ class FiltroProduto extends Component {
               </View>
             </TouchableHighlight>
           </View>
-          <View style={styles.viewRadioButtons}>
+          <ScrollView style={styles.viewRadioButtons}>
             <View style={styles.viewBarraPesquisar}>
               <View style={styles.viewSelectPesquisa}>
                 <RadioForm formHorizontal={true}>
@@ -206,115 +211,192 @@ class FiltroProduto extends Component {
                 />
               </View>
               <View style={styles.viewItem}>
-                <Text style={styles.txtDesc}>Marcas:</Text>
-                <DropDownPicker
-                  placeholder="Selecione..."
-                  items={this.props.marcas}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdownStyle}
-                  itemStyle={styles.dropdownItemStyle}
-                  dropDownStyle={styles.dropdownStyle}
-                  onChangeItem={item =>
-                    this.props.alteraMarcaSelecionada(item.value)
-                  }
-                  searchable={true}
-                  searchablePlaceholder="Pesquise por uma marca"
-                  searchablePlaceholderTextColor="gray"
-                  seachableStyle={{}}
-                  searchableError={() => <Text>Nada encontrado</Text>}
-                />
-                {/* <Picker
-                  mode="dropdown"
-                  selectedValue={this.props.idMarcaSelecionada}
-                  onValueChange={(itemValue, itemIndex) => {
-                    this.props.alteraMarcaSelecionada(itemValue);
-                  }}
-                  style={styles.txtInput}>
-                  <Picker.Item label={'--'} value={null} key={-1} />
-                  {this.props.marcas.map((obj, i) => (
-                    <Picker.Item label={obj.label} value={obj.value} key={i} />
-                  ))}
-                </Picker> */}
+                <SafeAreaView>
+                  <Text style={styles.txtDesc}>Marca:</Text>
+                  {this._renderErroValidacao(this.props.validacaoMarcas)}
+                  <SectionedMultiSelect
+                    items={this.props.marcas}
+                    IconRenderer={Icon}
+                    single={true}
+                    uniqueKey="value"
+                    displayKey="label"
+                    selectText={this.props.labelMarcaSelecionada}
+                    confirmText="Cancelar"
+                    searchPlaceholderText="Pesquisar marca"
+                    noResultsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem resultados.
+                      </Text>
+                    }
+                    noItemsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem itens encontrados.
+                      </Text>
+                    }
+                    onSelectedItemsChange={item => {
+                      this.props.alteraMarcaSelecionada(
+                        item[0],
+                        this.props.marcas,
+                      );
+                    }}
+                    onConfirm={obj =>
+                      this.props.alteraMarcaSelecionada(null, null)
+                    }
+                    onToggleSelector={obj => {
+                      if (obj) {
+                        if (this.props.marcas.length === 0) {
+                          this.props.buscaMarcas(this.props.token);
+                        }
+                      }
+                    }}
+                  />
+                </SafeAreaView>
               </View>
               <View style={styles.viewItem}>
-                <Text style={styles.txtDesc}>Tamanhos:</Text>
-                <DropDownPicker
-                  placeholder="Selecione..."
-                  items={this.props.tamanhos}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdownStyle}
-                  itemStyle={styles.dropdownItemStyle}
-                  dropDownStyle={styles.dropdownStyle}
-                  onChangeItem={item =>
-                    this.props.alteraTamanhoSelecionado(item.value)
-                  }
-                  searchable={true}
-                  searchablePlaceholder="Pesquise por um tamanho"
-                  searchablePlaceholderTextColor="gray"
-                  seachableStyle={{}}
-                  searchableError={() => <Text>Nada encontrado</Text>}
-                />
+                <SafeAreaView>
+                  <Text style={styles.txtDesc}>Tamanho:</Text>
+                  {this._renderErroValidacao(this.props.validacaoTamanhos)}
+                  <SectionedMultiSelect
+                    items={this.props.tamanhos}
+                    IconRenderer={Icon}
+                    single={true}
+                    uniqueKey="value"
+                    displayKey="label"
+                    selectText={this.props.labelTamanhoSelecionado}
+                    confirmText="Cancelar"
+                    searchPlaceholderText="Pesquisar tamanho"
+                    noResultsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem resultados.
+                      </Text>
+                    }
+                    noItemsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem itens encontrados.
+                      </Text>
+                    }
+                    onSelectedItemsChange={item => {
+                      this.props.alteraTamanhoSelecionado(
+                        item[0],
+                        this.props.tamanhos,
+                      );
+                    }}
+                    onConfirm={obj =>
+                      this.props.alteraTamanhoSelecionado(null, null)
+                    }
+                    onToggleSelector={obj => {
+                      if (obj) {
+                        if (this.props.tamanhos.length === 0) {
+                          this.props.buscaTamanhos(this.props.token);
+                        }
+                      }
+                    }}
+                  />
+                </SafeAreaView>
               </View>
               <View style={styles.viewItem}>
-                <Text style={styles.txtDesc}>Cores:</Text>
-                <DropDownPicker
-                  placeholder="Selecione..."
-                  items={this.props.cores}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdownStyle}
-                  itemStyle={styles.dropdownItemStyle}
-                  dropDownStyle={styles.dropdownStyle}
-                  onChangeItem={item =>
-                    this.props.alteraCorSelecionada(item.value)
-                  }
-                  searchable={true}
-                  searchablePlaceholder="Pesquise por uma cor"
-                  searchablePlaceholderTextColor="gray"
-                  seachableStyle={{}}
-                  searchableError={() => <Text>Nada encontrado</Text>}
-                />
+                <SafeAreaView>
+                  <Text style={styles.txtDesc}>Cor:</Text>
+                  {this._renderErroValidacao(this.props.validacaoCores)}
+                  <SectionedMultiSelect
+                    items={this.props.cores}
+                    IconRenderer={Icon}
+                    single={true}
+                    uniqueKey="value"
+                    displayKey="label"
+                    selectText={this.props.labelCorSelecionada}
+                    confirmText="Cancelar"
+                    searchPlaceholderText="Pesquisar cor"
+                    noResultsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem resultados.
+                      </Text>
+                    }
+                    noItemsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem itens encontrados.
+                      </Text>
+                    }
+                    onSelectedItemsChange={item => {
+                      this.props.alteraCorSelecionada(
+                        item[0],
+                        this.props.cores,
+                      );
+                    }}
+                    onConfirm={obj =>
+                      this.props.alteraCorSelecionada(null, null)
+                    }
+                    onToggleSelector={obj => {
+                      if (obj) {
+                        if (this.props.cores.length === 0) {
+                          this.props.buscaCores(this.props.token);
+                        }
+                      }
+                    }}
+                  />
+                </SafeAreaView>
               </View>
               <View style={styles.viewItem}>
-                <Text style={styles.txtDesc}>Grupo:</Text>
-                <DropDownPicker
-                  placeholder="Selecione..."
-                  items={this.props.grupos}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdownStyle}
-                  itemStyle={styles.dropdownItemStyle}
-                  dropDownStyle={styles.dropdownStyle}
-                  onChangeItem={item => {
-                    this.props.alteraGrupoSelecionado(item.value);
-                    this.props.buscaSubgrupos(item.value, this.props.grupos);
-                  }}
-                  searchable={true}
-                  searchablePlaceholder="Pesquise por um grupo"
-                  searchablePlaceholderTextColor="gray"
-                  seachableStyle={{}}
-                  searchableError={() => <Text>Nada encontrado</Text>}
-                />
-              </View>
-              <View style={styles.viewItem}>
-                <Text style={styles.txtDesc}>Subgrupo:</Text>
-                <DropDownPicker
-                  placeholder="Selecione..."
-                  items={this.props.subgrupos}
-                  containerStyle={styles.containerStyle}
-                  style={styles.dropdownStyle}
-                  itemStyle={styles.dropdownItemStyle}
-                  dropDownStyle={styles.dropdownStyle}
-                  onChangeItem={item =>
-                    this.props.alteraSubgrupoSelecionado(item.value)
-                  }
-                  searchable={true}
-                  searchablePlaceholder="Pesquise por um subgrupo"
-                  searchablePlaceholderTextColor="gray"
-                  seachableStyle={{}}
-                  searchableError={() => <Text>Nada encontrado</Text>}
-                />
+                <SafeAreaView>
+                  <Text style={styles.txtDesc}>Subgrupo:</Text>
+                  {this._renderErroValidacao(this.props.validacaoGrupos)}
+                  <SectionedMultiSelect
+                    items={this.props.grupos}
+                    IconRenderer={Icon}
+                    single={true}
+                    uniqueKey="value"
+                    displayKey="label"
+                    subKey="SubGrupos"
+                    selectText={this.props.labelSubgrupoSelecionado}
+                    confirmText="Cancelar"
+                    searchPlaceholderText="Pesquisar subgrupo"
+                    noResultsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem resultados.
+                      </Text>
+                    }
+                    noItemsComponent={
+                      <Text style={styles.txtSemResultado}>
+                        Sem itens encontrados.
+                      </Text>
+                    }
+                    showDropDowns={true}
+                    readOnlyHeadings={true}
+                    onSelectedItemsChange={item => {
+                      this.props.alteraSubgrupoSelecionado(
+                        item[0],
+                        this.props.grupos,
+                      );
+                    }}
+                    onConfirm={obj =>
+                      this.props.alteraSubgrupoSelecionado(null, null)
+                    }
+                    onToggleSelector={obj => {
+                      if (obj) {
+                        if (this.props.grupos.length === 0) {
+                          this.props.buscaGrupos(this.props.token);
+                        }
+                      }
+                    }}
+                  />
+                </SafeAreaView>
               </View>
             </View>
-          </View>
+            <TouchableHighlight
+              onPress={() => {
+                this.props.alteraSubgrupoSelecionado(null, null);
+                this.props.alteraCorSelecionada(null, null);
+                this.props.alteraMarcaSelecionada(null, null);
+                this.props.alteraTamanhoSelecionado(null, null);
+              }}
+              underlayColor="transparent">
+              <View style={styles.viewTxtCancelarFiltro}>
+                <Text style={[styles.txtCancelarFiltro, styles.txtCabecalho]}>
+                  Cancelar filtros
+                </Text>
+              </View>
+            </TouchableHighlight>
+          </ScrollView>
         </View>
       </Modal>
     );
@@ -336,18 +418,20 @@ const mapStateToProps = state => ({
     state.ProdutosReducer.valueFiltroProdutoSelecionado,
   marcas: state.ProdutosReducer.marcas,
   idMarcaSelecionada: state.ProdutosReducer.idMarcaSelecionada,
+  labelMarcaSelecionada: state.ProdutosReducer.labelMarcaSelecionada,
   validacaoMarcas: state.ProdutosReducer.validacaoMarcas,
   tamanhos: state.ProdutosReducer.tamanhos,
   idTamanhoSelecionado: state.ProdutosReducer.idTamanhoSelecionado,
+  labelTamanhoSelecionado: state.ProdutosReducer.labelTamanhoSelecionado,
   validacaoTamanhos: state.ProdutosReducer.validacaoTamanhos,
   cores: state.ProdutosReducer.cores,
   idCorSelecionada: state.ProdutosReducer.idCorSelecionada,
+  labelCorSelecionada: state.ProdutosReducer.labelCorSelecionada,
   validacaoCores: state.ProdutosReducer.validacaoCores,
   grupos: state.ProdutosReducer.grupos,
-  idGrupoSelecionado: state.ProdutosReducer.idGrupoSelecionado,
   validacaoGrupos: state.ProdutosReducer.validacaoGrupos,
-  subgrupos: state.ProdutosReducer.subgrupos,
   idSubgrupoSelecionado: state.ProdutosReducer.idSubgrupoSelecionado,
+  labelSubgrupoSelecionado: state.ProdutosReducer.labelSubgrupoSelecionado,
 });
 
 export default connect(
@@ -362,7 +446,6 @@ export default connect(
     modificaSearchProduto,
     mostraPesquisarProdutos,
     isLoadingProdutos,
-    mostrarIconeFiltroProdutos,
     alteraFiltroProdutoSelecionado,
     buscaMarcas,
     alteraMarcaSelecionada,
@@ -373,7 +456,6 @@ export default connect(
     alteraGrupoSelecionado,
     buscaGrupos,
     alteraSubgrupoSelecionado,
-    buscaSubgrupos,
   },
 )(FiltroProduto);
 
@@ -386,7 +468,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   viewCabecalho: {
-    //flex: 1,
     backgroundColor: '#edeff2',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -426,19 +507,9 @@ const styles = StyleSheet.create({
   txtFiltrarPorAssunto: {
     color: '#474a4f',
   },
-  viewTitulo: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#7e848c',
-  },
   radioButton: {
     paddingBottom: 10,
-    //borderColor: '#b3b3b3',
     marginTop: 6,
-    //borderBottomWidth: 1,
   },
   viewRadioButtons: {
     flex: 7,
@@ -459,13 +530,23 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontWeight: 'bold',
   },
-  containerStyle: {
-    height: 40,
+  txtSemResultado: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#474a4f',
   },
-  dropdownStyle: {
-    backgroundColor: '#fafafa',
+  txtValidacao: {
+    color: '#c60905',
+    fontSize: 12,
+    paddingLeft: 15,
   },
-  dropdownItemStyle: {
-    justifyContent: 'flex-start',
+  viewTxtCancelarFiltro: {
+    backgroundColor: '#3f51b5',
+    borderRadius: 10,
+    margin: 5,
+  },
+  txtCancelarFiltro: {
+    color: '#fff',
+    alignSelf: 'center',
   },
 });

@@ -64,11 +64,11 @@ class ListaProdutos extends Component {
     this.props.alteraSkipProdutos(0);
     this.props.alteraDataLoadProdutos([]);
     this.props.isLoadingProdutos('N');
-    this.props.alteraTamanhoSelecionado(null);
-    this.props.alteraMarcaSelecionada(null);
-    this.props.alteraCorSelecionada(null);
-    this.props.alteraGrupoSelecionado(null);
-    this.props.alteraSubgrupoSelecionado(null);
+    this.props.alteraTamanhoSelecionado(null, null);
+    this.props.alteraMarcaSelecionada(null, null);
+    this.props.alteraCorSelecionada(null, null);
+    this.props.alteraGrupoSelecionado(null, null);
+    this.props.alteraSubgrupoSelecionado(null, null);
     this.props.buscaListaProdutos(
       this.props.token,
       '',
@@ -90,11 +90,11 @@ class ListaProdutos extends Component {
     this.setState({
       maxReached: false,
     });
-    await this.props.alteraTamanhoSelecionado(null);
-    await this.props.alteraMarcaSelecionada(null);
-    await this.props.alteraCorSelecionada(null);
-    await this.props.alteraGrupoSelecionado(null);
-    await this.props.alteraSubgrupoSelecionado(null);
+    await this.props.alteraTamanhoSelecionado(null, null);
+    await this.props.alteraMarcaSelecionada(null, null);
+    await this.props.alteraCorSelecionada(null, null);
+    await this.props.alteraGrupoSelecionado(null, null);
+    await this.props.alteraSubgrupoSelecionado(null, null);
     await this.props.modificaSearchProduto('');
     await this.props.mostraPesquisarProdutos(false);
     return true;
@@ -145,44 +145,14 @@ class ListaProdutos extends Component {
     return;
   };
 
-  /*searchProdutos = async () => {
-    await this.props.alteraSkipProdutos(0);
-    await this.props.alteraDataLoadProdutos([]);
-    await this.props.isLoadingProdutos('S');
-    this.setState({
-      maxReached: false,
-    });
-    await this.props.buscaListaProdutos(
-      this.props.token,
-      this.props.textoSearch,
-      this.props.skip,
-      top,
-      this.props.valueFiltroProdutoSelecionado,
-    );
-    const response = this.props.listaProdutos;
-
-    if (response.length === 0) {
-      await this.props.isLoadingProdutos('MAX');
-      this.setState({maxReached: true});
-    }
-
-    if (!this.state.maxReached) {
-      await this.props.alteraSkipProdutos(this.props.skip + top);
-      await this.props.alteraDataLoadProdutos([
-        ...this.props.data,
-        ...response,
-      ]);
-    }
-  };*/
-
   cancelSearch = async () => {
     await this.props.alteraSkipProdutos(0);
     await this.props.alteraDataLoadProdutos([]);
-    await this.props.alteraTamanhoSelecionado(null);
-    await this.props.alteraMarcaSelecionada(null);
-    await this.props.alteraCorSelecionada(null);
-    await this.props.alteraSubgrupoSelecionado(null);
-    await this.props.alteraGrupoSelecionado(null);
+    await this.props.alteraTamanhoSelecionado(null, null);
+    await this.props.alteraMarcaSelecionada(null, null);
+    await this.props.alteraCorSelecionada(null, null);
+    await this.props.alteraSubgrupoSelecionado(null, null);
+    await this.props.alteraGrupoSelecionado(null, null);
     await this.props.buscaListaProdutos(
       this.props.token,
       '',
@@ -207,11 +177,11 @@ class ListaProdutos extends Component {
       maxReached: false,
     });
     await this.props.modificaSearchProduto('');
-    await this.props.alteraTamanhoSelecionado(null);
-    await this.props.alteraMarcaSelecionada(null);
-    await this.props.alteraCorSelecionada(null);
-    await this.props.alteraGrupoSelecionado(null);
-    await this.props.alteraSubgrupoSelecionado(null);
+    await this.props.alteraTamanhoSelecionado(null, null);
+    await this.props.alteraMarcaSelecionada(null, null);
+    await this.props.alteraCorSelecionada(null, null);
+    await this.props.alteraGrupoSelecionado(null, null);
+    await this.props.alteraSubgrupoSelecionado(null, null);
   };
 
   renderRow(produto) {

@@ -40,14 +40,18 @@ const INITIAL_STATE = {
   codigoCliente: null,
   marcas: [],
   idMarcaSelecionada: null,
+  labelMarcaSelecionada: 'Selecione uma marca...',
   tamanhos: [],
   idTamanhoSelecionado: null,
+  labelTamanhoSelecionado: 'Selecione um tamanho...',
   cores: [],
   idCorSelecionada: null,
+  labelCorSelecionada: 'Selecione uma cor...',
   grupos: [],
   idGrupoSelecionado: null,
   subgrupos: [],
   idSubgrupoSelecionado: null,
+  labelSubgrupoSelecionado: 'Selecione um subgrupo...',
 
   //filtro
   modalFiltroProdutoVisible: false,
@@ -114,19 +118,31 @@ export default (state = INITIAL_STATE, action) => {
     case BUSCA_MARCAS:
       return {...state, marcas: action.payload, validacaoMarcas: ''};
     case ALTERA_MARCA_SELECIONADA:
-      return {...state, idMarcaSelecionada: action.payload};
+      return {
+        ...state,
+        idMarcaSelecionada: action.payload.codigo,
+        labelMarcaSelecionada: action.payload.label,
+      };
     case VALIDA_MARCAS:
       return {...state, validacaoMarcas: action.payload};
     case BUSCA_TAMANHOS:
       return {...state, tamanhos: action.payload, validacaoTamanhos: ''};
     case ALTERA_TAMANHO_SELECIONADO:
-      return {...state, idTamanhoSelecionado: action.payload};
+      return {
+        ...state,
+        idTamanhoSelecionado: action.payload.codigo,
+        labelTamanhoSelecionado: action.payload.label,
+      };
     case VALIDA_TAMANHOS:
       return {...state, validacaoTamanhos: action.payload};
     case BUSCA_CORES:
       return {...state, cores: action.payload, validacaoCores: ''};
     case ALTERA_COR_SELECIONADA:
-      return {...state, idCorSelecionada: action.payload};
+      return {
+        ...state,
+        idCorSelecionada: action.payload.codigo,
+        labelCorSelecionada: action.payload.label,
+      };
     case VALIDA_CORES:
       return {...state, validacaoCores: action.payload};
     case BUSCA_GRUPOS:
@@ -138,7 +154,11 @@ export default (state = INITIAL_STATE, action) => {
     case BUSCA_SUBGRUPOS:
       return {...state, subgrupos: action.payload};
     case ALTERA_SUBGRUPO_SELECIONADO:
-      return {...state, idSubgrupoSelecionado: action.payload};
+      return {
+        ...state,
+        idSubgrupoSelecionado: action.payload.codigo,
+        labelSubgrupoSelecionado: action.payload.label,
+      };
     default:
       return state;
   }
