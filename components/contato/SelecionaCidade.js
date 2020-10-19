@@ -3,7 +3,6 @@ import {
   View,
   TouchableHighlight,
   Image,
-  StyleSheet,
   StatusBar,
   Text,
   FlatList,
@@ -21,6 +20,7 @@ import {
 } from '../../actions/ContatosActions';
 import {Actions} from 'react-native-router-flux';
 import {SearchBar} from 'react-native-elements';
+import styles from './styles/SelecionaCidade.style';
 
 const top = 10;
 
@@ -308,84 +308,3 @@ export default connect(
     mostraBarraPesquisarCidade,
   },
 )(SelecionarCidade);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-  },
-  viewHeader: {
-    backgroundColor: 'rgb(41, 41, 41)',
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  viewMenuIcon: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  viewLogo: {
-    flex: 6,
-    alignItems: 'center',
-  },
-  menuIcon: {
-    height: 5,
-    width: 5,
-    resizeMode: 'contain',
-    margin: 10,
-    padding: 10,
-  },
-  viewHeaderText: {
-    flex: 6,
-    alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginLeft: 20,
-    flexDirection: 'row',
-  },
-  txtHeader: {
-    fontSize: 20,
-    color: '#FFF',
-  },
-  txtCidade: {
-    color: '#474a4f',
-    fontSize: 17,
-  },
-  viewCidade: {
-    paddingTop: 18,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
-    borderBottomWidth: 1,
-    borderColor: '#dbdcde',
-  },
-  viewPesquisar: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#393e42',
-  },
-  searchBar: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  searchBarIcon: {
-    flex: 1,
-  },
-  touchSearch: {
-    borderColor: '#000',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  loading: {
-    marginTop: 20,
-    marginBottom: 80,
-  },
-  txtValidacao: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 15,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

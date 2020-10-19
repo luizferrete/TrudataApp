@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
-  Image,
   BackHandler,
   ActivityIndicator,
 } from 'react-native';
@@ -30,14 +28,9 @@ import {
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {formatarCurrency} from '../utils/Utils';
 import {Actions} from 'react-native-router-flux';
-import {SearchBar} from 'react-native-elements';
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button';
 import FastImage from 'react-native-fast-image';
 import FiltroProduto from './FiltroProduto';
+import styles from './styles/ListaProdutos.style';
 
 const top = 10;
 
@@ -215,112 +208,6 @@ class ListaProdutos extends Component {
     );
   }
 
-  renderHeader = mostra => {
-    var filtroNome = {value: 0, label: 'Nome'};
-    var filtroCodigo = {value: 1, label: 'Código'};
-    if (mostra) {
-      return (
-        <View style={styles.viewBarraPesquisar}>
-          <View style={styles.viewSelectPesquisa}>
-            <Text style={styles.txtPesquisa}>Pesquisar por:</Text>
-            <RadioForm formHorizontal={true}>
-              <RadioButton
-                labelHorizontal={true}
-                key={filtroCodigo.value}
-                selectedButtonColor={'#009688'}
-                style={styles.radioButton}>
-                <RadioButtonInput
-                  obj={filtroCodigo}
-                  index={filtroCodigo.value}
-                  isSelected={
-                    this.props.valueFiltroProdutoSelecionado ===
-                    filtroCodigo.value
-                  }
-                  onPress={() =>
-                    this.props.alteraFiltroProdutoSelecionado(filtroCodigo)
-                  }
-                  borderWidth={1}
-                  buttonColor={'#009688'}
-                  buttonSize={8}
-                  buttonOuterSize={16}
-                  buttonWrapStyle={styles.buttonWrapStyle}
-                />
-                <RadioButtonLabel
-                  obj={filtroCodigo}
-                  index={filtroCodigo.value}
-                  labelHorizontal={true}
-                  onPress={() =>
-                    this.props.alteraFiltroProdutoSelecionado(filtroCodigo)
-                  }
-                  labelStyle={styles.radioButtonLabel}
-                />
-              </RadioButton>
-              <RadioButton
-                labelHorizontal={true}
-                key={filtroNome.value}
-                selectedButtonColor={'#009688'}
-                style={styles.radioButton}>
-                <RadioButtonInput
-                  obj={filtroNome}
-                  index={filtroNome.value}
-                  isSelected={
-                    this.props.valueFiltroProdutoSelecionado ===
-                    filtroNome.value
-                  }
-                  onPress={() =>
-                    this.props.alteraFiltroProdutoSelecionado(filtroNome)
-                  }
-                  borderWidth={1}
-                  buttonColor={'#009688'}
-                  buttonSize={8}
-                  buttonOuterSize={16}
-                  buttonWrapStyle={styles.buttonWrapStyle}
-                />
-                <RadioButtonLabel
-                  obj={filtroNome}
-                  index={filtroNome.value}
-                  labelHorizontal={true}
-                  onPress={() =>
-                    this.props.alteraFiltroProdutoSelecionado(filtroNome)
-                  }
-                  labelStyle={styles.radioButtonLabel}
-                />
-              </RadioButton>
-            </RadioForm>
-          </View>
-          <View style={styles.viewPesquisar}>
-            <SearchBar
-              keyboardType={
-                this.props.valueFiltroProdutoSelecionado === filtroCodigo.value
-                  ? 'numeric'
-                  : 'default'
-              }
-              placeholder="Pesquise aqui..."
-              round
-              editable={true}
-              value={this.props.textoSearch}
-              onChangeText={text => this.props.modificaSearchProduto(text)}
-              containerStyle={styles.searchBar}
-              searchIcon={false}
-              onCancel={() => this.cancelSearch()}
-            />
-            <TouchableHighlight
-              onPress={() =>
-                this.props.loading === 'S' ? false : this.searchProdutos()
-              }
-              style={styles.touchSearch}
-              underlayColor="transparent">
-              <Image
-                source={require('../../imgs/btn_search.png')}
-                style={[styles.menuIcon, styles.searchBarIcon]}
-              />
-            </TouchableHighlight>
-          </View>
-        </View>
-      );
-    }
-  };
-
   renderFooter = () => {
     if (this.props.loading === 'N') {
       return <View style={styles.loading} />;
@@ -331,7 +218,15 @@ class ListaProdutos extends Component {
         </View>
       );
     } else if (this.props.loading === 'MAX') {
-      return <View style={styles.viewSemRegistro} />;
+      if (this.props.data.length > 0) {
+        return <View style={styles.viewSemRegistro} />;
+      } else {
+        return (
+          <View style={styles.viewNenhumItem}>
+            <Text style={styles.txtNenhumItem}>Nenhum resultado!</Text>
+          </View>
+        );
+      }
     }
   };
 
@@ -345,7 +240,6 @@ class ListaProdutos extends Component {
     return (
       <View style={styles.viewPrincipal}>
         <Header titulo="Produtos" />
-        {this.renderHeader(this.props.mostraPesquisarProd)}
         {this._renderErroServer(this.props.validacaoListaProduto)}
         <View style={styles.viewLista}>
           <FlatList
@@ -401,113 +295,3 @@ export default connect(
     alteraSubgrupoSelecionado,
   },
 )(ListaProdutos);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-  },
-  viewProduto: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    padding: 10,
-    margin: 10,
-    flexDirection: 'row',
-    elevation: 4,
-  },
-  imgProduto: {
-    resizeMode: 'contain',
-    width: 80,
-    height: 80,
-  },
-  viewInfosProduto: {
-    flexDirection: 'column',
-    marginLeft: 10,
-  },
-  txtDesc: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  txtMarca: {
-    color: '#7e848c',
-  },
-  txtPreco: {
-    fontSize: 16,
-    color: '#ff5252',
-    fontWeight: 'bold',
-  },
-  viewLista: {
-    flex: 10,
-  },
-  viewPesquisar: {
-    flexDirection: 'row',
-    backgroundColor: '#393e42',
-  },
-  viewSelectPesquisa: {
-    flexDirection: 'row',
-    backgroundColor: '#393e42',
-  },
-  searchBar: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  menuIcon: {
-    height: 5,
-    width: 5,
-    resizeMode: 'contain',
-    margin: 22,
-    padding: 10,
-  },
-  searchBarIcon: {
-    flex: 1,
-  },
-  touchSearch: {
-    borderColor: '#000',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  loading: {
-    marginTop: 20,
-    marginBottom: 80,
-  },
-  txtValidacaoServer: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 15,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-  viewSemRegistro: {
-    margin: 10,
-    borderBottomWidth: 2,
-    borderColor: '#edeff2',
-  },
-  radioButton: {
-    paddingBottom: 10,
-    //borderColor: '#b3b3b3',
-    //borderBottomWidth: 1,
-  },
-  viewRadioButtons: {
-    flex: 7,
-    padding: 5,
-  },
-  buttonWrapStyle: {
-    marginLeft: 10,
-    marginTop: 11,
-  },
-  radioButtonLabel: {
-    fontSize: 15,
-    color: '#FFF',
-    marginTop: 8,
-    paddingRight: 20,
-  },
-  txtPesquisa: {
-    fontSize: 15,
-    color: '#FFF',
-    marginTop: 8,
-    marginLeft: 10,
-  },
-});

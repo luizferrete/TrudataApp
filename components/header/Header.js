@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  TouchableHighlight,
-  Image,
-  StyleSheet,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {View, TouchableHighlight, Image, StatusBar, Text} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {setModalFiltroVisible} from '../../actions/ContatosActions';
@@ -15,6 +8,7 @@ import {
   mostraPesquisarProdutos,
   setModalFiltroProdutosVisible,
 } from '../../actions/ProdutosAction';
+import styles from './styles/Header.style';
 
 class Header extends Component {
   constructor(props) {
@@ -168,58 +162,3 @@ export default connect(
     setModalFiltroProdutosVisible,
   },
 )(Header);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    backgroundColor: 'rgb(41, 41, 41)',
-    padding: 10,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  viewMenuIcon: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  viewLogo: {
-    flex: 6,
-    alignItems: 'center',
-  },
-  menuIcon: {
-    height: 30,
-    width: 30,
-    resizeMode: 'contain',
-    margin: 10,
-    padding: 10,
-  },
-  logoIcon: {
-    height: 58,
-    width: 200,
-    resizeMode: 'contain',
-    padding: 10,
-  },
-  viewHeaderText: {
-    flex: 6,
-    alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginLeft: 20,
-    flexDirection: 'row',
-  },
-  viewHeaderTextContato: {
-    flex: 6,
-    alignItems: 'flex-start',
-    alignSelf: 'center',
-    marginLeft: 20,
-    flexDirection: 'row',
-  },
-  txtHeader: {
-    fontSize: 27,
-    color: '#FFF',
-  },
-  filtroContato: {
-    height: 30,
-    width: 30,
-    resizeMode: 'contain',
-    margin: 10,
-    padding: 10,
-  },
-});

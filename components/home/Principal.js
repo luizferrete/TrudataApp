@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-  BackHandler,
-} from 'react-native';
+import {View, Text, Image, TouchableHighlight, BackHandler} from 'react-native';
 import {connect} from 'react-redux';
 import Header from '../header/Header';
 import {buscaContatos} from '../../actions/PrincipalActions';
 import Modal from 'react-native-modal';
 import {Actions} from 'react-native-router-flux';
+import styles from './styles/Principal.style';
 
 class Principal extends Component {
   state = {
@@ -120,103 +114,3 @@ export default connect(
   mapStateToProps,
   {buscaContatos},
 )(Principal);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    backgroundColor: 'rgb(237, 239, 242)',
-    flex: 1,
-  },
-  viewCards: {
-    padding: 20,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    flex: 1,
-  },
-  imgContato: {
-    height: 110,
-    width: 110,
-    resizeMode: 'contain',
-  },
-  cardContato: {
-    backgroundColor: '#3f51b5',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: 1,
-    height: 109,
-    marginTop: 1,
-  },
-  contatosCardName: {
-    flex: 1,
-  },
-  txtContatosCardName: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FFF',
-    paddingTop: 20,
-    paddingLeft: 10,
-  },
-  contatosInfo: {
-    flex: 1,
-    flexDirection: 'row',
-    marginBottom: 10,
-  },
-  txtContatosHoje: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#FFF',
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 10,
-  },
-  txtContatosMes: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#FFF',
-    paddingTop: 17,
-  },
-  btnAdicionar: {
-    width: 85,
-    height: 85,
-    alignSelf: 'flex-start',
-    resizeMode: 'contain',
-  },
-  btnAdicionarModal: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-  },
-  touchAdicionar: {
-    borderRadius: 50,
-    alignSelf: 'flex-end',
-    margin: 23,
-  },
-  touchAdicionarModal: {
-    borderRadius: 50,
-  },
-  viewPrincipalModal: {
-    flex: 1,
-    alignItems: 'flex-end',
-    flexDirection: 'column-reverse',
-  },
-  viewBotaoFechar: {
-    flex: 2,
-  },
-  viewAdicionarContato: {
-    flex: 2,
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  viewPlaceholder: {
-    flex: 9,
-  },
-  btnAdicionarContato: {
-    width: 75,
-    height: 75,
-    resizeMode: 'contain',
-    marginRight: 15,
-  },
-  txtAdicionarContato: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});

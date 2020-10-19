@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   Image,
-  Dimensions,
   ActivityIndicator,
   BackHandler,
 } from 'react-native';
@@ -26,6 +24,7 @@ import {TouchableHighlight} from 'react-native-gesture-handler';
 import {Actions} from 'react-native-router-flux';
 import {formatarData} from '../utils/Utils';
 import FiltroContato from './FiltroContato';
+import styles from './styles/ListaContatos.style';
 
 const top = 6;
 
@@ -110,7 +109,15 @@ class ListaContatos extends Component {
         </View>
       );
     } else if (this.props.loading === 'MAX') {
-      return <View style={styles.viewSemRegistro} />;
+      if (this.props.data.length > 0) {
+        return <View style={styles.viewSemRegistro} />;
+      } else {
+        return (
+          <View style={styles.viewNenhumItem}>
+            <Text style={styles.txtNenhumItem}>Nenhum resultado!</Text>
+          </View>
+        );
+      }
     }
   };
 
@@ -235,70 +242,3 @@ export default connect(
     mostrarIconeFiltroContatos,
   },
 )(ListaContatos);
-
-const styles = StyleSheet.create({
-  touchAdicionarModal: {
-    borderRadius: 50,
-  },
-  viewBotaoFechar: {
-    marginLeft: 50,
-  },
-  viewPrincipalModal: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  viewPrincipal: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-    position: 'relative',
-  },
-  viewContato: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    padding: 20,
-    margin: 10,
-    elevation: 4,
-  },
-  txtTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#474a4f',
-  },
-  txtNome: {
-    color: '#7e848c',
-  },
-  txtStatus: {
-    color: '#ff5252',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  btnAdicionar: {
-    width: 85,
-    height: 85,
-    flexDirection: 'column',
-    //alignSelf: 'center',
-    resizeMode: 'contain',
-    //position: 'absolute',
-  },
-  viewBtnAdicionar: {
-    position: 'absolute',
-    left: Dimensions.get('window').width - 100,
-    bottom: 0,
-    flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  touchAdicionar: {
-    borderRadius: 50,
-  },
-  txtValidacaoServer: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 15,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

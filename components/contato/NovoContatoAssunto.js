@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  TouchableHighlight,
-  BackHandler,
-} from 'react-native';
+import {View, Text, Image, TouchableHighlight, BackHandler} from 'react-native';
 import NovoContatoHeader from './NovoContatoHeader';
 import {connect} from 'react-redux';
 import {
@@ -20,6 +12,7 @@ import RadioForm, {
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
 import {Actions} from 'react-native-router-flux';
+import styles from './styles/NovoContatoAssunto.style';
 
 class NovoContatoAssunto extends Component {
   constructor(props) {
@@ -123,60 +116,3 @@ export default connect(
   mapStateToProps,
   {buscaTiposContato, alteraTipoContatoSelecionado},
 )(NovoContatoAssunto);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-    position: 'relative',
-  },
-  viewTitulo: {
-    padding: 10,
-  },
-  txtTitulo: {
-    color: '#7e848c',
-    fontSize: 13,
-    fontWeight: 'bold',
-  },
-  viewRadioButtons: {
-    padding: 20,
-  },
-  buttonWrapStyle: {
-    marginLeft: 10,
-    marginTop: 11,
-  },
-  radioButtonLabel: {
-    fontSize: 15,
-    color: '#474a4f',
-    marginTop: 10,
-  },
-  btnAvancar: {
-    width: 85,
-    height: 85,
-    flexDirection: 'column',
-    //alignSelf: 'center',
-    resizeMode: 'contain',
-    //position: 'absolute',
-  },
-  viewBtnAvancar: {
-    position: 'absolute',
-    left: Dimensions.get('window').width - 100,
-    bottom: 0,
-    flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    alignSelf: 'center',
-  },
-  touchAvancar: {
-    borderRadius: 50,
-  },
-  txtValidacao: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 5,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

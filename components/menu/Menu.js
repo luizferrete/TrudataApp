@@ -3,7 +3,6 @@ import {
   View,
   Text,
   ImageBackground,
-  StyleSheet,
   Image,
   TouchableHighlight,
 } from 'react-native';
@@ -30,6 +29,7 @@ import {
   mostraPesquisarClientes,
 } from '../../actions/ClientesActions';
 import {highlightMenu} from '../../actions/PrincipalActions';
+import styles from './styles/Menu.styles';
 
 class Menu extends Component {
   constructor(props) {
@@ -42,17 +42,17 @@ class Menu extends Component {
         <ImageBackground
           source={require('../../imgs/bg_menu.png')}
           style={styles.imgBg}>
-          <View style={styles.profileImgView}>
+          <View style={styles.viewProfileImg}>
             <Image
               source={require('../../imgs/profile_image.png')}
               style={styles.profileImg}
             />
           </View>
-          <View style={styles.usuarioLogadoView}>
-            <Text style={styles.usuarioLogadoNomeText}>
+          <View style={styles.viewUsuarioLogado}>
+            <Text style={styles.txtUsuarioLogadoNome}>
               {this.props.usuarioLogadoNome}
             </Text>
-            <Text style={styles.usuarioLogadoEmailText}>
+            <Text style={styles.txtUsuarioLogadoEmail}>
               {this.props.usuarioLogadoEmail}
             </Text>
           </View>
@@ -76,7 +76,7 @@ class Menu extends Component {
                 source={require('../../imgs/baseline_home.png')}
                 style={styles.iconsMenu}
               />
-              <Text style={styles.textMenu}>Home</Text>
+              <Text style={styles.txtMenu}>Home</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight
@@ -101,7 +101,7 @@ class Menu extends Component {
                 source={require('../../imgs/baseline_announcement.png')}
                 style={styles.iconsMenu}
               />
-              <Text style={styles.textMenu}>Fale Conosco / Contatos</Text>
+              <Text style={styles.txtMenu}>Fale Conosco / Contatos</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight
@@ -130,7 +130,7 @@ class Menu extends Component {
                 source={require('../../imgs/baseline_assignment.png')}
                 style={styles.iconsMenu}
               />
-              <Text style={styles.textMenu}>Produtos</Text>
+              <Text style={styles.txtMenu}>Produtos</Text>
             </View>
           </TouchableHighlight>
           <TouchableHighlight
@@ -154,10 +154,13 @@ class Menu extends Component {
                 source={require('../../imgs/baseline_people.png')}
                 style={styles.iconsMenu}
               />
-              <Text style={styles.textMenu}>Clientes</Text>
+              <Text style={styles.txtMenu}>Clientes</Text>
             </View>
           </TouchableHighlight>
           <View style={styles.viewFinalMenu} />
+        </View>
+        <View style={styles.viewFooter}>
+          <Text style={styles.txtVersao}>Versão 1.00.00</Text>
         </View>
       </View>
     );
@@ -190,67 +193,3 @@ export default connect(
     alteraFiltroProdutoSelecionado,
   },
 )(Menu);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-  },
-  imgBg: {
-    flex: 2,
-  },
-  profileImgView: {
-    flex: 2,
-    padding: 15,
-    alignSelf: 'flex-start',
-    flexDirection: 'column-reverse',
-  },
-  profileImg: {
-    resizeMode: 'contain',
-    width: 100,
-    height: 100,
-  },
-  usuarioLogadoView: {
-    flex: 1,
-    padding: 15,
-  },
-  usuarioLogadoNomeText: {
-    fontSize: 18,
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-  usuarioLogadoEmailText: {
-    fontSize: 18,
-    color: '#d3d6db',
-  },
-  viewItens: {
-    flex: 4,
-  },
-  menuTouch: {
-    flex: 1,
-  },
-  viewMenu: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  iconsMenu: {
-    resizeMode: 'contain',
-    width: 35,
-    height: 35,
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  textMenu: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#5d6065',
-    marginLeft: 30,
-    marginTop: 15,
-  },
-  viewFinalMenu: {
-    flex: 4,
-  },
-  selectedMenu: {
-    backgroundColor: '#edeff2',
-  },
-});

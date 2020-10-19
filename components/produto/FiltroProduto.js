@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableHighlight,
   ScrollView,
   SafeAreaView,
@@ -38,6 +37,7 @@ import RadioForm, {
 import {SearchBar} from 'react-native-elements';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styles from './styles/FiltroProduto.style';
 
 const top = 10;
 
@@ -215,6 +215,14 @@ class FiltroProduto extends Component {
                   <Text style={styles.txtDesc}>Marca:</Text>
                   {this._renderErroValidacao(this.props.validacaoMarcas)}
                   <SectionedMultiSelect
+                    styles={{
+                      selectToggle: {
+                        paddingLeft: 15,
+                        paddingTop: 5,
+                        paddingRight: 10,
+                        paddingBottom: 5,
+                      },
+                    }}
                     items={this.props.marcas}
                     IconRenderer={Icon}
                     single={true}
@@ -257,6 +265,14 @@ class FiltroProduto extends Component {
                   <Text style={styles.txtDesc}>Tamanho:</Text>
                   {this._renderErroValidacao(this.props.validacaoTamanhos)}
                   <SectionedMultiSelect
+                    styles={{
+                      selectToggle: {
+                        paddingLeft: 15,
+                        paddingTop: 5,
+                        paddingRight: 10,
+                        paddingBottom: 5,
+                      },
+                    }}
                     items={this.props.tamanhos}
                     IconRenderer={Icon}
                     single={true}
@@ -299,6 +315,14 @@ class FiltroProduto extends Component {
                   <Text style={styles.txtDesc}>Cor:</Text>
                   {this._renderErroValidacao(this.props.validacaoCores)}
                   <SectionedMultiSelect
+                    styles={{
+                      selectToggle: {
+                        paddingLeft: 15,
+                        paddingTop: 5,
+                        paddingRight: 10,
+                        paddingBottom: 5,
+                      },
+                    }}
                     items={this.props.cores}
                     IconRenderer={Icon}
                     single={true}
@@ -341,6 +365,16 @@ class FiltroProduto extends Component {
                   <Text style={styles.txtDesc}>Subgrupo:</Text>
                   {this._renderErroValidacao(this.props.validacaoGrupos)}
                   <SectionedMultiSelect
+                    styles={{
+                      separator: {backgroundColor: '#b7b7b7'},
+                      subSeparator: {backgroundColor: '#dadada'},
+                      selectToggle: {
+                        paddingLeft: 15,
+                        paddingTop: 5,
+                        paddingRight: 10,
+                        paddingBottom: 5,
+                      },
+                    }}
                     items={this.props.grupos}
                     IconRenderer={Icon}
                     single={true}
@@ -388,6 +422,7 @@ class FiltroProduto extends Component {
                 this.props.alteraCorSelecionada(null, null);
                 this.props.alteraMarcaSelecionada(null, null);
                 this.props.alteraTamanhoSelecionado(null, null);
+                this.props.modificaSearchProduto('');
               }}
               underlayColor="transparent">
               <View style={styles.viewTxtCancelarFiltro}>
@@ -458,95 +493,3 @@ export default connect(
     alteraSubgrupoSelecionado,
   },
 )(FiltroProduto);
-
-const styles = StyleSheet.create({
-  modal: {
-    margin: 35,
-  },
-  viewPrincipalModal: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  viewCabecalho: {
-    backgroundColor: '#edeff2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#7e848c',
-  },
-  viewPesquisar: {
-    borderBottomWidth: 1,
-    borderColor: '#7e848c',
-  },
-  viewTxtFiltros: {
-    flex: 4,
-    padding: 5,
-  },
-  viewTxtAplicar: {
-    flex: 2,
-  },
-  txtCabecalho: {
-    padding: 15,
-    fontWeight: 'bold',
-  },
-  txtFiltros: {
-    color: '#7e848c',
-  },
-  txtAplicar: {
-    borderRadius: 10,
-    margin: 5,
-    color: '#fff',
-    backgroundColor: '#1f91f3',
-  },
-  txtFechar: {
-    borderRadius: 10,
-    margin: 5,
-    color: '#fff',
-    backgroundColor: '#c60905',
-  },
-  txtFiltrarPorAssunto: {
-    color: '#474a4f',
-  },
-  radioButton: {
-    paddingBottom: 10,
-    marginTop: 6,
-  },
-  viewRadioButtons: {
-    flex: 7,
-    padding: 5,
-  },
-  buttonWrapStyle: {
-    marginLeft: 10,
-    marginTop: 11,
-  },
-  radioButtonLabel: {
-    fontSize: 12,
-    color: '#474a4f',
-    marginTop: 8,
-  },
-  txtDesc: {
-    padding: 5,
-    paddingLeft: 15,
-    paddingTop: 10,
-    fontWeight: 'bold',
-  },
-  txtSemResultado: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: '#474a4f',
-  },
-  txtValidacao: {
-    color: '#c60905',
-    fontSize: 12,
-    paddingLeft: 15,
-  },
-  viewTxtCancelarFiltro: {
-    backgroundColor: '#3f51b5',
-    borderRadius: 10,
-    margin: 5,
-  },
-  txtCancelarFiltro: {
-    color: '#fff',
-    alignSelf: 'center',
-  },
-});

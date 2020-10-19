@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   Image,
   TouchableHighlight,
   Picker,
@@ -39,6 +38,7 @@ import {
 import {Actions} from 'react-native-router-flux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {formatarData} from '../utils/Utils';
+import styles from './styles/NovoContato.style';
 
 class NovoContato extends Component {
   constructor(props) {
@@ -410,62 +410,3 @@ export default connect(
     selecionaCidade,
   },
 )(NovoContato);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-  },
-  viewItem: {
-    paddingTop: 15,
-    paddingLeft: 15,
-    paddingRight: 15,
-  },
-  txtDesc: {
-    color: '#7e848c',
-  },
-  txtInput: {
-    fontSize: 16,
-    color: '#474a4f',
-    marginTop: 5,
-  },
-  txtInputCliente: {
-    flex: 1,
-    alignContent: 'flex-start',
-  },
-  btnAdicionarCliente: {
-    width: 55,
-    height: 55,
-  },
-  flexDirectionRow: {
-    flexDirection: 'row',
-  },
-  touchAddCliente: {
-    borderRadius: 50,
-  },
-  borda: {
-    borderColor: '#dbdcde',
-    borderBottomWidth: 1,
-  },
-  bordaTxt: {
-    borderColor: '#dbdcde',
-    borderBottomWidth: 1,
-    paddingBottom: 10,
-    paddingTop: 10,
-  },
-  txtValidacao: {
-    color: '#FF4444',
-    marginTop: 3,
-    fontStyle: 'italic',
-  },
-  txtValidacaoServer: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 5,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

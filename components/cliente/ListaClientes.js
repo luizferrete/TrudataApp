@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   FlatList,
   BackHandler,
   Image,
@@ -24,6 +23,7 @@ import {
   isLoadingClientes,
   mostrarIconeFiltroClientes,
 } from '../../actions/ClientesActions';
+import styles from './styles/ListaClientes.style';
 
 const top = 10;
 
@@ -216,7 +216,15 @@ class ListaClientes extends Component {
         </View>
       );
     } else if (this.props.loading === 'MAX') {
-      return <View style={styles.viewSemRegistro} />;
+      if (this.props.data.length > 0) {
+        return <View style={styles.viewSemRegistro} />;
+      } else {
+        return (
+          <View style={styles.viewNenhumItem}>
+            <Text style={styles.txtNenhumItem}>Nenhum resultado!</Text>
+          </View>
+        );
+      }
     }
   };
 
@@ -270,67 +278,3 @@ export default connect(
     mostrarIconeFiltroClientes,
   },
 )(ListaClientes);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-  },
-  viewCliente: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    padding: 10,
-    margin: 10,
-    elevation: 4,
-  },
-  txtTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    color: '#474a4f',
-  },
-  txtAniver: {
-    color: '#7e848c',
-  },
-  txtCadastro: {
-    color: '#3f51b5',
-    fontWeight: 'bold',
-  },
-  viewPesquisar: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#393e42',
-  },
-  searchBar: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  menuIcon: {
-    height: 5,
-    width: 5,
-    resizeMode: 'contain',
-    margin: 22,
-    padding: 10,
-  },
-  searchBarIcon: {
-    flex: 1,
-  },
-  touchSearch: {
-    borderColor: '#000',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-  },
-  loading: {
-    marginTop: 20,
-    marginBottom: 80,
-  },
-  txtValidacaoServer: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 15,
-    marginTop: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

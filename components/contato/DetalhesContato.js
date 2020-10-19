@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Text, StyleSheet, BackHandler} from 'react-native';
+import {View, ScrollView, Text, BackHandler} from 'react-native';
 import Header from '../header/Header';
 import {connect} from 'react-redux';
 import {
@@ -8,6 +8,7 @@ import {
 } from '../../actions/ContatosActions';
 import {formatarData} from '../utils/Utils';
 import {Actions} from 'react-native-router-flux';
+import styles from './styles/DetalhesContato.style';
 
 class DetalhesContato extends Component {
   constructor(props) {
@@ -129,53 +130,3 @@ export default connect(
   mapStateToProps,
   {buscaDetalhesContato, mostrarIconeFiltroContatos},
 )(DetalhesContato);
-
-const styles = StyleSheet.create({
-  viewPrincipal: {
-    backgroundColor: '#edeff2',
-    flex: 1,
-  },
-  viewTituloPrincipal: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    padding: 10,
-    margin: 10,
-    marginBottom: 0,
-    elevation: 4,
-  },
-  tituloPrincipal: {
-    color: '#474a4f',
-    fontSize: 21,
-    alignSelf: 'center',
-  },
-  viewCard: {
-    backgroundColor: '#FFF',
-    padding: 20,
-    margin: 10,
-    flex: 15,
-    elevation: 3,
-  },
-  txtDescAssunto: {
-    color: '#474a4f',
-    fontSize: 17,
-    marginBottom: 12,
-    fontWeight: 'bold',
-  },
-  txtDesc: {
-    color: '#474a4f',
-    fontSize: 17,
-    marginBottom: 5,
-    fontWeight: 'bold',
-  },
-  txtItem: {
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  txtValidacaoServer: {
-    backgroundColor: '#FF4444',
-    color: '#FFFFFF',
-    padding: 15,
-    fontWeight: 'bold',
-    borderRadius: 10,
-  },
-});

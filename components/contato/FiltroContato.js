@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, Text, TouchableHighlight} from 'react-native';
 import Modal from 'react-native-modal';
 import {connect} from 'react-redux';
 import {
@@ -17,6 +17,7 @@ import RadioForm, {
   RadioButtonInput,
   RadioButtonLabel,
 } from 'react-native-simple-radio-button';
+import styles from './styles/FiltroContato.style';
 
 const todosAssuntos = {value: 0, label: 'Todos os assuntos'};
 const top = 6;
@@ -185,66 +186,3 @@ export default connect(
     buscaListaContatos,
   },
 )(FiltroContato);
-
-const styles = StyleSheet.create({
-  modal: {
-    margin: 35,
-  },
-  viewPrincipalModal: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  viewCabecalho: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#7e848c',
-  },
-  viewTxtFiltros: {
-    flex: 4,
-  },
-  viewTxtAplicar: {
-    flex: 2,
-  },
-  txtCabecalho: {
-    padding: 20,
-    fontWeight: 'bold',
-  },
-  txtFiltros: {
-    color: '#7e848c',
-  },
-  txtAplicar: {
-    color: '#1f91f3',
-  },
-  txtFiltrarPorAssunto: {
-    color: '#474a4f',
-  },
-  viewTitulo: {
-    flex: 1,
-    backgroundColor: '#edeff2',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderColor: '#7e848c',
-  },
-  radioButton: {
-    paddingBottom: 10,
-    borderColor: '#b3b3b3',
-    borderBottomWidth: 1,
-  },
-  viewRadioButtons: {
-    flex: 7,
-    padding: 5,
-  },
-  buttonWrapStyle: {
-    marginLeft: 10,
-    marginTop: 11,
-  },
-  radioButtonLabel: {
-    fontSize: 12,
-    color: '#474a4f',
-    marginTop: 8,
-  },
-});
