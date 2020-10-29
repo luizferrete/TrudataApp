@@ -28,6 +28,8 @@ import {
   alteraGrupoSelecionado,
   buscaGrupos,
   alteraSubgrupoSelecionado,
+  alteraPesquisaAtiva,
+  isFiltroAtivo,
 } from '../../actions/ProdutosAction';
 import RadioForm, {
   RadioButton,
@@ -42,6 +44,41 @@ import styles from './styles/FiltroProduto.style';
 const top = 10;
 
 class FiltroProduto extends Component {
+  isPesquisaAtiva = async () => {
+    var obj = {
+      codDesc: this.props.textoSearch,
+      marca:
+        this.props.idMarcaSelecionada !== null
+          ? this.props.labelMarcaSelecionada
+          : '',
+      tamanho:
+        this.props.idTamanhoSelecionado !== null
+          ? this.props.labelTamanhoSelecionado
+          : '',
+      cor:
+        this.props.idCorSelecionada !== null
+          ? this.props.labelCorSelecionada
+          : '',
+      subgrupo:
+        this.props.idSubgrupoSelecionado !== null
+          ? this.props.labelSubgrupoSelecionado
+          : '',
+    };
+
+    if (
+      this.props.textoSearch !== '' ||
+      this.props.idMarcaSelecionada !== null ||
+      this.props.idTamanhoSelecionado !== null ||
+      this.props.idCorSelecionada !== null ||
+      this.props.idSubgrupoSelecionado !== null
+    ) {
+      await this.props.alteraPesquisaAtiva(true);
+    } else {
+      await this.props.alteraPesquisaAtiva(false);
+    }
+    await this.props.isFiltroAtivo(obj);
+  };
+
   searchProdutos = async () => {
     await this.props.setModalFiltroProdutosVisible(false);
     await this.props.alteraSkipProdutos(0);
@@ -75,6 +112,7 @@ class FiltroProduto extends Component {
         ...response,
       ]);
     }
+    await this.isPesquisaAtiva();
   };
 
   _renderErroValidacao(item) {
@@ -101,20 +139,9 @@ class FiltroProduto extends Component {
               </Text>
             </View>
             <TouchableHighlight
-              onPress={() =>
-                this.props.loading === 'S' ? false : this.searchProdutos()
-              }
-              underlayColor="transparent">
-              <View style={styles.viewTxtAplicar}>
-                <Text style={[styles.txtAplicar, styles.txtCabecalho]}>
-                  APLICAR
-                </Text>
-              </View>
-            </TouchableHighlight>
-            <TouchableHighlight
               onPress={() => this.props.setModalFiltroProdutosVisible(false)}
               underlayColor="transparent">
-              <View style={styles.viewTxtAplicar}>
+              <View style={styles.viewTxtFechar}>
                 <Text style={[styles.txtFechar, styles.txtCabecalho]}>X</Text>
               </View>
             </TouchableHighlight>
@@ -417,6 +444,17 @@ class FiltroProduto extends Component {
               </View>
             </View>
             <TouchableHighlight
+              onPress={() =>
+                this.props.loading === 'S' ? false : this.searchProdutos()
+              }
+              underlayColor="transparent">
+              <View style={styles.viewTxtAplicar}>
+                <Text style={[styles.txtAplicarCancelar, styles.txtCabecalho]}>
+                  APLICAR FILTROS
+                </Text>
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
               onPress={() => {
                 this.props.alteraSubgrupoSelecionado(null, null);
                 this.props.alteraCorSelecionada(null, null);
@@ -426,8 +464,8 @@ class FiltroProduto extends Component {
               }}
               underlayColor="transparent">
               <View style={styles.viewTxtCancelarFiltro}>
-                <Text style={[styles.txtCancelarFiltro, styles.txtCabecalho]}>
-                  Cancelar filtros
+                <Text style={[styles.txtAplicarCancelar, styles.txtCabecalho]}>
+                  CANCELAR FILTROS
                 </Text>
               </View>
             </TouchableHighlight>
@@ -467,6 +505,7 @@ const mapStateToProps = state => ({
   validacaoGrupos: state.ProdutosReducer.validacaoGrupos,
   idSubgrupoSelecionado: state.ProdutosReducer.idSubgrupoSelecionado,
   labelSubgrupoSelecionado: state.ProdutosReducer.labelSubgrupoSelecionado,
+  pesquisaAtiva: state.ProdutosReducer.pesquisaAtiva,
 });
 
 export default connect(
@@ -491,5 +530,7 @@ export default connect(
     alteraGrupoSelecionado,
     buscaGrupos,
     alteraSubgrupoSelecionado,
+    alteraPesquisaAtiva,
+    isFiltroAtivo,
   },
 )(FiltroProduto);

@@ -8,11 +8,6 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#7e848c',
   },
-  viewTxtCancelarFiltro: {
-    backgroundColor: '#3f51b5',
-    borderRadius: 10,
-    margin: 5,
-  },
   viewPesquisar: {
     borderBottomWidth: 1,
     borderColor: '#7e848c',
@@ -26,25 +21,29 @@ export default StyleSheet.create({
     padding: 5,
   },
   viewTxtAplicar: {
+    backgroundColor: '#1f91f3',
+    borderRadius: 10,
+    margin: 5,
+  },
+  viewTxtFechar: {
     flex: 2,
+  },
+  viewTxtCancelarFiltro: {
+    backgroundColor: '#3f51b5',
+    borderRadius: 10,
+    margin: 5,
   },
   viewTxtFiltros: {
     flex: 4,
     padding: 5,
   },
   /* =========== Texts =========== */
-  txtAplicar: {
-    borderRadius: 10,
-    margin: 5,
+  txtAplicarCancelar: {
     color: '#fff',
-    backgroundColor: '#1f91f3',
   },
   txtCabecalho: {
     padding: 15,
     fontWeight: 'bold',
-  },
-  txtCancelarFiltro: {
-    color: '#fff',
     alignSelf: 'center',
   },
   txtDesc: {

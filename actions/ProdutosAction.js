@@ -27,6 +27,8 @@ import {
   VALIDA_GRUPOS,
   BUSCA_SUBGRUPOS,
   ALTERA_SUBGRUPO_SELECIONADO,
+  ALTERA_PESQUISA_ATIVA,
+  IS_FILTRO_ATIVO,
 } from './types';
 import api from '../services/api';
 import {Actions} from 'react-native-router-flux';
@@ -459,5 +461,19 @@ export const alteraSubgrupoSelecionado = (cdSub, listaGrupos) => {
   return {
     type: ALTERA_SUBGRUPO_SELECIONADO,
     payload: {codigo: cdSub, label: label},
+  };
+};
+
+export const alteraPesquisaAtiva = ativo => {
+  return {
+    type: ALTERA_PESQUISA_ATIVA,
+    payload: ativo,
+  };
+};
+
+export const isFiltroAtivo = ativo => {
+  return {
+    type: IS_FILTRO_ATIVO,
+    payload: ativo,
   };
 };

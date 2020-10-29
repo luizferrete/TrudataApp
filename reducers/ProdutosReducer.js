@@ -27,6 +27,8 @@ import {
   VALIDA_GRUPOS,
   BUSCA_SUBGRUPOS,
   ALTERA_SUBGRUPO_SELECIONADO,
+  ALTERA_PESQUISA_ATIVA,
+  IS_FILTRO_ATIVO,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -39,19 +41,25 @@ const INITIAL_STATE = {
   idLocalSelecionado: null,
   codigoCliente: null,
   marcas: [],
+  filtroCodDescAtivo: '',
   idMarcaSelecionada: null,
   labelMarcaSelecionada: 'Selecione uma marca...',
+  filtroMarcaAtivo: '',
   tamanhos: [],
   idTamanhoSelecionado: null,
   labelTamanhoSelecionado: 'Selecione um tamanho...',
+  filtroTamanhoAtivo: '',
   cores: [],
   idCorSelecionada: null,
   labelCorSelecionada: 'Selecione uma cor...',
+  filtroCorAtivo: '',
   grupos: [],
   idGrupoSelecionado: null,
   subgrupos: [],
   idSubgrupoSelecionado: null,
   labelSubgrupoSelecionado: 'Selecione um subgrupo...',
+  filtroSubgrupoAtivo: '',
+  pesquisaAtiva: false,
 
   //filtro
   modalFiltroProdutoVisible: false,
@@ -158,6 +166,20 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         idSubgrupoSelecionado: action.payload.codigo,
         labelSubgrupoSelecionado: action.payload.label,
+      };
+    case ALTERA_PESQUISA_ATIVA:
+      return {
+        ...state,
+        pesquisaAtiva: action.payload,
+      };
+    case IS_FILTRO_ATIVO:
+      return {
+        ...state,
+        filtroCodDescAtivo: action.payload.codDesc,
+        filtroMarcaAtivo: action.payload.marca,
+        filtroCorAtivo: action.payload.cor,
+        filtroTamanhoAtivo: action.payload.tamanho,
+        filtroSubgrupoAtivo: action.payload.subgrupo,
       };
     default:
       return state;

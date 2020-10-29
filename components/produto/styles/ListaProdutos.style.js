@@ -1,11 +1,22 @@
 import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   /* =========== Views =========== */
-
+  viewFiltrosAtivos: {
+    borderColor: '#000',
+    borderWidth: 1,
+    backgroundColor: '#FFF',
+    flexDirection: 'column',
+    margin: 10,
+    padding: 5,
+    elevation: 4,
+  },
   viewInfosProduto: {
     flexDirection: 'column',
     marginLeft: 10,
     flexShrink: 1,
+  },
+  viewLinhaFiltroAtivo: {
+    flexDirection: 'row',
   },
   viewLista: {
     flex: 10,
@@ -50,6 +61,21 @@ export default StyleSheet.create({
 
   txtDesc: {
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  txtDescFiltro: {
+    fontSize: 16,
+    color: '#3b4151',
+    fontWeight: 'bold',
+  },
+  txtFiltrosAtivos: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#3b4151',
+  },
+  txtLabelFiltro: {
+    fontSize: 16,
+    color: '#7e848c',
     fontWeight: 'bold',
   },
   txtMarca: {

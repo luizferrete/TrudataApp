@@ -24,6 +24,7 @@ import {
   alteraCorSelecionada,
   alteraGrupoSelecionado,
   alteraSubgrupoSelecionado,
+  alteraPesquisaAtiva,
 } from '../../actions/ProdutosAction';
 import {TouchableHighlight} from 'react-native-gesture-handler';
 import {formatarCurrency} from '../utils/Utils';
@@ -62,6 +63,7 @@ class ListaProdutos extends Component {
     this.props.alteraCorSelecionada(null, null);
     this.props.alteraGrupoSelecionado(null, null);
     this.props.alteraSubgrupoSelecionado(null, null);
+    this.props.alteraPesquisaAtiva(false);
     this.props.buscaListaProdutos(
       this.props.token,
       '',
@@ -89,6 +91,7 @@ class ListaProdutos extends Component {
     await this.props.alteraGrupoSelecionado(null, null);
     await this.props.alteraSubgrupoSelecionado(null, null);
     await this.props.modificaSearchProduto('');
+    await this.props.alteraPesquisaAtiva(false);
     await this.props.mostraPesquisarProdutos(false);
     return true;
   };
@@ -146,6 +149,7 @@ class ListaProdutos extends Component {
     await this.props.alteraCorSelecionada(null, null);
     await this.props.alteraSubgrupoSelecionado(null, null);
     await this.props.alteraGrupoSelecionado(null, null);
+    await this.props.alteraPesquisaAtiva(false);
     await this.props.buscaListaProdutos(
       this.props.token,
       '',
@@ -169,12 +173,6 @@ class ListaProdutos extends Component {
     this.setState({
       maxReached: false,
     });
-    await this.props.modificaSearchProduto('');
-    await this.props.alteraTamanhoSelecionado(null, null);
-    await this.props.alteraMarcaSelecionada(null, null);
-    await this.props.alteraCorSelecionada(null, null);
-    await this.props.alteraGrupoSelecionado(null, null);
-    await this.props.alteraSubgrupoSelecionado(null, null);
   };
 
   renderRow(produto) {
@@ -236,12 +234,50 @@ class ListaProdutos extends Component {
     }
   }
 
+  _renderLinhaFiltroAtivo(desc, id) {
+    if (id !== '') {
+      return (
+        <View style={styles.viewLinhaFiltroAtivo}>
+          <Text style={styles.txtDescFiltro}>{desc}: </Text>
+          <Text style={styles.txtLabelFiltro}>{id}</Text>
+        </View>
+      );
+    }
+  }
+
+  _renderFiltrosAtivos() {
+    if (this.props.pesquisaAtiva === true) {
+      return (
+        <View style={styles.viewFiltrosAtivos}>
+          <View style={styles.viewLinhaFiltroAtivo}>
+            <Text style={styles.txtFiltrosAtivos}>Filtros Ativos</Text>
+          </View>
+          {this._renderLinhaFiltroAtivo(
+            'Codigo/Desc',
+            this.props.filtroCodDescAtivo,
+          )}
+          {this._renderLinhaFiltroAtivo('Marca', this.props.filtroMarcaAtivo)}
+          {this._renderLinhaFiltroAtivo(
+            'Tamanho',
+            this.props.filtroTamanhoAtivo,
+          )}
+          {this._renderLinhaFiltroAtivo('Cor', this.props.filtroCorAtivo)}
+          {this._renderLinhaFiltroAtivo(
+            'Subgrupo',
+            this.props.filtroSubgrupoAtivo,
+          )}
+        </View>
+      );
+    }
+  }
+
   render() {
     return (
       <View style={styles.viewPrincipal}>
         <Header titulo="Produtos" />
         {this._renderErroServer(this.props.validacaoListaProduto)}
         <View style={styles.viewLista}>
+          {this._renderFiltrosAtivos()}
           <FlatList
             data={this.props.data}
             renderItem={({item}) => this.renderRow(item)}
@@ -273,6 +309,16 @@ const mapStateToProps = state => ({
   idTamanhoSelecionado: state.ProdutosReducer.idTamanhoSelecionado,
   idCorSelecionada: state.ProdutosReducer.idCorSelecionada,
   idSubgrupoSelecionado: state.ProdutosReducer.idSubgrupoSelecionado,
+  labelMarcaSelecionada: state.ProdutosReducer.labelMarcaSelecionada,
+  labelTamanhoSelecionado: state.ProdutosReducer.labelTamanhoSelecionado,
+  labelCorSelecionada: state.ProdutosReducer.labelCorSelecionada,
+  labelSubgrupoSelecionado: state.ProdutosReducer.labelSubgrupoSelecionado,
+  pesquisaAtiva: state.ProdutosReducer.pesquisaAtiva,
+  filtroMarcaAtivo: state.ProdutosReducer.filtroMarcaAtivo,
+  filtroTamanhoAtivo: state.ProdutosReducer.filtroTamanhoAtivo,
+  filtroCorAtivo: state.ProdutosReducer.filtroCorAtivo,
+  filtroSubgrupoAtivo: state.ProdutosReducer.filtroSubgrupoAtivo,
+  filtroCodDescAtivo: state.ProdutosReducer.filtroCodDescAtivo,
 });
 
 export default connect(
@@ -293,5 +339,6 @@ export default connect(
     alteraCorSelecionada,
     alteraGrupoSelecionado,
     alteraSubgrupoSelecionado,
+    alteraPesquisaAtiva,
   },
 )(ListaProdutos);

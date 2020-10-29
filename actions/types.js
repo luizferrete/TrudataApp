@@ -107,3 +107,5 @@ export const VALIDA_GRUPOS = 'valida_grupos';
 export const ALTERA_GRUPO_SELECIONADO = 'altera_grupo_selecionado';
 export const BUSCA_SUBGRUPOS = 'busca_subgrupos';
 export const ALTERA_SUBGRUPO_SELECIONADO = 'altera_subgrupo_selecionado';
+export const ALTERA_PESQUISA_ATIVA = 'altera_pesquisa_ativa';
+export const IS_FILTRO_ATIVO = 'is_filtro_ativo';
